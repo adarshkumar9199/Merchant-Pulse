@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merchant Growth & Retention Decision Engine | Python Analytics</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand-logo">
+      <div class="brand-icon">M</div>
+      <div>
+        <div class="brand-title">Merchant Engine</div>
+        <div class="brand-tagline">Python Analytics Platform</div>
+      </div>
+    </div>
+
+    <ul class="nav-menu">
+      <li class="nav-item active">
+        <a href="/">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/merchants">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span>Merchant Directory</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#importCsvModal">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          <span>Import CSV / Data</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="main-wrapper">
+    
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-title-box">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <h1>Merchant Growth & Retention Decision Engine</h1>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 11px;">Last Updated: {{ last_updated }}</span>
+        </div>
+        <div class="header-subtitle">Real-time payment analytics & merchant health diagnosis (100% Python Engine)</div>
+      </div>
+    </header>
+
+    <!-- Content Body -->
+    <main class="content-body">
+
+      <!-- Top KPI Cards Grid (Python Rendered) -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-title">Total Merchants</div>
+          <div class="kpi-value">{{ summary.total_merchants | number }}</div>
+          <div class="kpi-subtext">Onboarded network</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">Active Merchants (30d)</div>
+          <div class="kpi-value">{{ summary.active_merchants | number }}</div>
+          <div class="kpi-subtext">Actively processing</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">Total Gross Volume (GMV)</div>
+          <div class="kpi-value">{{ summary.total_gmv | currency }}</div>
+          <div class="kpi-subtext">12-Month aggregate</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">Total Transactions</div>
+          <div class="kpi-value">{{ summary.total_transactions | number }}</div>
+          <div class="kpi-subtext">Processed payment volume</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">Success Rate</div>
+          <div class="kpi-value">{{ summary.overall_success_rate }}%</div>
+          <div class="kpi-subtext">Payment SLA reliability</div>
+        </div>
+
+        <div class="kpi-card alert-border">
+          <div class="kpi-title">At-Risk Merchants</div>
+          <div class="kpi-value" style="color: var(--accent-red);">{{ summary.at_risk_count | number }}</div>
+          <div class="kpi-subtext negative">Requires immediate intervention</div>
+        </div>
+      </section>
+
+      <!-- Section 1: Business Overview Trends (Pure Python SVGs) -->
+      <section class="dashboard-row">
+        <div class="card col-8">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Monthly Transaction GMV Trend</div>
+              <div class="card-subtitle">Aggregated gross transaction processing value over 12 months (Python SVG)</div>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            {{ svg_gmv_trend | safe }}
+          </div>
+        </div>
+
+        <div class="card col-4">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Monthly Processing Volume</div>
+              <div class="card-subtitle">Total completed transactions (Python SVG)</div>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            {{ svg_volume_bar | safe }}
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Merchant Health & Segment Distribution -->
+      <section class="dashboard-row">
+        <div class="card col-4">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Merchant Health Distribution</div>
+              <div class="card-subtitle">Segmentation breakdown by score & growth behavior (Python SVG)</div>
+            </div>
+          </div>
+          <div class="chart-wrapper" style="height: 260px;">
+            {{ svg_segment_donut | safe }}
+          </div>
+        </div>
+
+        <div class="card col-8">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Acquisition Opportunity Hotspots</div>
+              <div class="card-subtitle">Top City + Merchant Category expansion targets</div>
+            </div>
+          </div>
+          <div class="opportunity-grid">
+            {% for o in opportunities %}
+            <div class="opportunity-card">
+              <div class="opp-header">
+                <div>
+                  <div class="opp-city">{{ o.city }}</div>
+                  <div class="opp-cat">{{ o.category }}</div>
+                </div>
+                <div class="opp-score-badge">{{ o.opportunity_score }}</div>
+              </div>
+              <div class="opp-metrics">
+                <div class="opp-metric-item">
+                  <span>Demand Volume</span>
+                  <strong>{{ o.demand_volume | number }} txns</strong>
+                </div>
+                <div class="opp-metric-item">
+                  <span>Demand GMV</span>
+                  <strong>{{ o.demand_gmv | currency }}</strong>
+                </div>
+                <div class="opp-metric-item">
+                  <span>Existing Merchants</span>
+                  <strong>{{ o.existing_merchant_count }} stores</strong>
+                </div>
+                <div class="opp-metric-item">
+                  <span>Avg Ticket Size</span>
+                  <strong>₹{{ o.avg_transaction_value }}</strong>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Merchant Risk & Attention Table (Python Rendered) -->
+      <section class="card col-12">
+        <div class="card-header" style="flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div class="card-title">Merchant Decision & Retention Desk</div>
+            <div class="card-subtitle">Showing {{ merchants | length }} prioritized merchants (Python SQL Engine)</div>
+          </div>
+
+          <!-- Pure Python GET Form Filtering -->
+          <form action="/" method="GET" class="filter-bar">
+            <input type="text" name="search" class="form-control" placeholder="Search merchant, city, category..." value="{{ search }}" style="width: 200px;">
+            
+            <select name="city" class="form-control">
+              <option value="ALL" {% if selected_city == 'ALL' %}selected{% endif %}>All Cities</option>
+              <option value="Mumbai" {% if selected_city == 'Mumbai' %}selected{% endif %}>Mumbai</option>
+              <option value="Bengaluru" {% if selected_city == 'Bengaluru' %}selected{% endif %}>Bengaluru</option>
+              <option value="Delhi NCR" {% if selected_city == 'Delhi NCR' %}selected{% endif %}>Delhi NCR</option>
+              <option value="Pune" {% if selected_city == 'Pune' %}selected{% endif %}>Pune</option>
+              <option value="Hyderabad" {% if selected_city == 'Hyderabad' %}selected{% endif %}>Hyderabad</option>
+              <option value="Chennai" {% if selected_city == 'Chennai' %}selected{% endif %}>Chennai</option>
+              <option value="Kolkata" {% if selected_city == 'Kolkata' %}selected{% endif %}>Kolkata</option>
+              <option value="Ahmedabad" {% if selected_city == 'Ahmedabad' %}selected{% endif %}>Ahmedabad</option>
+              <option value="Jaipur" {% if selected_city == 'Jaipur' %}selected{% endif %}>Jaipur</option>
+            </select>
+
+            <select name="category" class="form-control">
+              <option value="ALL" {% if selected_category == 'ALL' %}selected{% endif %}>All Categories</option>
+              <option value="Grocery" {% if selected_category == 'Grocery' %}selected{% endif %}>Grocery</option>
+              <option value="Restaurants" {% if selected_category == 'Restaurants' %}selected{% endif %}>Restaurants</option>
+              <option value="Electronics" {% if selected_category == 'Electronics' %}selected{% endif %}>Electronics</option>
+              <option value="Fashion" {% if selected_category == 'Fashion' %}selected{% endif %}>Fashion</option>
+              <option value="Pharmacy" {% if selected_category == 'Pharmacy' %}selected{% endif %}>Pharmacy</option>
+              <option value="Bill Payment" {% if selected_category == 'Bill Payment' %}selected{% endif %}>Bill Payment</option>
+              <option value="Fuel" {% if selected_category == 'Fuel' %}selected{% endif %}>Fuel</option>
+              <option value="Retail" {% if selected_category == 'Retail' %}selected{% endif %}>Retail</option>
+            </select>
+
+            <select name="segment" class="form-control">
+              <option value="ALL" {% if selected_segment == 'ALL' %}selected{% endif %}>All Segments</option>
+              <option value="High Growth" {% if selected_segment == 'High Growth' %}selected{% endif %}>🚀 High Growth</option>
+              <option value="Healthy" {% if selected_segment == 'Healthy' %}selected{% endif %}>🟢 Healthy</option>
+              <option value="Stable" {% if selected_segment == 'Stable' %}selected{% endif %}>🔵 Stable</option>
+              <option value="Declining" {% if selected_segment == 'Declining' %}selected{% endif %}>🟡 Declining</option>
+              <option value="At Risk" {% if selected_segment == 'At Risk' %}selected{% endif %}>🔴 At Risk</option>
+            </select>
+
+            <button type="submit" class="btn-primary">Apply</button>
+            {% if search or selected_city != 'ALL' or selected_category != 'ALL' or selected_segment != 'ALL' %}
+              <a href="/" class="btn-primary" style="background: rgba(255,255,255,0.1); color:#fff; text-decoration:none;">Reset</a>
+            {% endif %}
+          </form>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th class="col-id">Merchant ID</th>
+                <th class="col-name">Name</th>
+                <th class="col-cat">Category</th>
+                <th class="col-city">City</th>
+                <th class="col-health">Health</th>
+                <th class="col-growth">Growth</th>
+                <th class="col-success">Success</th>
+                <th class="col-segment">Segment</th>
+                <th class="col-action">Recommended Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for m in merchants %}
+              <tr>
+                <td class="col-id">
+                  <a href="/merchants/{{ m.merchant_id }}" class="table-link">{{ m.merchant_id }}</a>
+                </td>
+                <td class="col-name" title="{{ m.merchant_name }}">
+                  <a href="/merchants/{{ m.merchant_id }}" class="table-link" style="color: #fff; font-weight: 600;">{{ m.merchant_name }}</a>
+                </td>
+                <td class="col-cat">{{ m.merchant_category }}</td>
+                <td class="col-city">{{ m.city }}</td>
+                <td class="col-health">
+                  <span class="health-score-pill {% if m.health_score >= 75 %}health-high{% elif m.health_score >= 50 %}health-mid{% else %}health-low{% endif %}">
+                    {{ m.health_score }}
+                  </span>
+                </td>
+                <td class="col-growth" style="{% if m.growth_rate >= 0 %}color: var(--accent-green);{% else %}color: var(--accent-red);{% endif %}">
+                  {% if m.growth_rate > 0 %}+{% endif %}{{ m.growth_rate }}%
+                </td>
+                <td class="col-success">{{ m.success_rate }}%</td>
+                <td class="col-segment">
+                  {% if m.segment == 'High Growth' %}
+                    <span class="badge badge-high-growth">🚀 High Growth</span>
+                  {% elif m.segment == 'Healthy' %}
+                    <span class="badge badge-healthy">🟢 Healthy</span>
+                  {% elif m.segment == 'Stable' %}
+                    <span class="badge badge-stable">🔵 Stable</span>
+                  {% elif m.segment == 'Declining' %}
+                    <span class="badge badge-declining">🟡 Declining</span>
+                  {% else %}
+                    <span class="badge badge-at-risk">🔴 At Risk</span>
+                  {% endif %}
+                </td>
+                <td class="col-action">{{ m.recommended_action }}</td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="9" style="text-align: center; padding: 24px; color: var(--text-muted);">
+                  No merchants match the selected search/filter criteria.
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- CSV Import Modal (100% Pure CSS :target Modal) -->
+  <div id="importCsvModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="card-title">Import CSV Data File</div>
+        <a href="#" class="modal-close">&times;</a>
+      </div>
+      <form action="/import-csv-action" method="POST" enctype="multipart/form-data">
+        <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 12px;">
+          <div>
+            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted);">Target Dataset Table</label>
+            <select name="dataset_type" class="form-control" style="width: 100%; margin-top: 6px;">
+              <option value="merchants">Merchants Dataset (merchants.csv)</option>
+              <option value="transactions">Transactions Dataset (transactions.csv)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted);">Select CSV File</label>
+            <input type="file" name="file" accept=".csv,.txt" class="form-control" style="width: 100%; margin-top: 6px; padding: 6px;" required>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;">
+            <a href="#" class="btn-primary" style="background: rgba(255,255,255,0.1); color:#fff; text-decoration:none; display:inline-flex; align-items:center;">Cancel</a>
+            <button type="submit" class="btn-primary">Upload & Process</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

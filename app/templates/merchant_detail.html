@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ merchant.merchant_name }} Profile | Python Decision Engine</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand-logo">
+      <div class="brand-icon">M</div>
+      <div>
+        <div class="brand-title">Merchant Engine</div>
+        <div class="brand-tagline">Python Analytics Platform</div>
+      </div>
+    </div>
+
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a href="/">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a href="/merchants">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span>Merchant Directory</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-wrapper">
+    
+    <header class="top-header">
+      <div class="header-title-box">
+        <h1>{{ merchant.merchant_name }}</h1>
+        <div class="header-subtitle">Merchant ID: {{ merchant.merchant_id }} • Category: {{ merchant.merchant_category }} • City: {{ merchant.city }}, {{ merchant.state }} • Onboarded: {{ merchant.onboarding_date }}</div>
+      </div>
+      <div>
+        <a href="/merchants" class="btn-primary" style="text-decoration: none;">&larr; Back to Directory</a>
+      </div>
+    </header>
+
+    <main class="content-body">
+      
+      <!-- Top Decision & Recommendation Banner (Python Rendered) -->
+      <section class="decision-banner">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div class="card-subtitle" style="text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--accent-indigo);">Strategic Business Recommendation</div>
+          <div>
+            {% if merchant.segment == 'High Growth' %}
+              <span class="badge badge-high-growth" style="font-size:14px; padding:6px 14px;">🚀 High Growth</span>
+            {% elif merchant.segment == 'Healthy' %}
+              <span class="badge badge-healthy" style="font-size:14px; padding:6px 14px;">🟢 Healthy</span>
+            {% elif merchant.segment == 'Stable' %}
+              <span class="badge badge-stable" style="font-size:14px; padding:6px 14px;">🔵 Stable</span>
+            {% elif merchant.segment == 'Declining' %}
+              <span class="badge badge-declining" style="font-size:14px; padding:6px 14px;">🟡 Declining</span>
+            {% else %}
+              <span class="badge badge-at-risk" style="font-size:14px; padding:6px 14px;">🔴 At Risk</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="decision-action-tag">Recommended Action: {{ merchant.recommended_action }}</div>
+        <div class="decision-explanation">{{ merchant.decision_explanation }}</div>
+      </section>
+
+      <!-- KPI Grid -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-title">Health Score</div>
+          <div class="kpi-value">{{ merchant.health_score }}</div>
+          <div class="kpi-subtext">Overall 0-100 score</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">MoM Growth Rate</div>
+          <div class="kpi-value" style="{% if merchant.growth_rate >= 0 %}color: var(--accent-green);{% else %}color: var(--accent-red);{% endif %}">
+            {% if merchant.growth_rate > 0 %}+{% endif %}{{ merchant.growth_rate }}%
+          </div>
+          <div class="kpi-subtext">30-day period change</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">Total GMV</div>
+          <div class="kpi-value">{{ merchant.total_transaction_value | currency }}</div>
+          <div class="kpi-subtext">Lifetime gross volume</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">Transactions</div>
+          <div class="kpi-value">{{ merchant.total_transactions | number }}</div>
+          <div class="kpi-subtext">Total processed count</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">Success Rate</div>
+          <div class="kpi-value">{{ merchant.success_rate }}%</div>
+          <div class="kpi-subtext">Payment SLA %</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">Active Days</div>
+          <div class="kpi-value">{{ merchant.active_days }} days</div>
+          <div class="kpi-subtext">Processing activity</div>
+        </div>
+      </section>
+
+      <!-- Charts & Component Breakdown Row -->
+      <section class="dashboard-row">
+        <!-- Monthly History Line Chart (Pure Python SVG) -->
+        <div class="card col-8">
+          <div class="card-header">
+            <div>
+              <div class="card-title">12-Month Performance Timeline</div>
+              <div class="card-subtitle">Monthly transaction GMV & volume history (Python SVG)</div>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            {{ svg_detail_history | safe }}
+          </div>
+        </div>
+
+        <!-- 5-Component Health Score Breakdown (Python Rendered Progress Bars) -->
+        <div class="card col-4">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Health Score Breakdown</div>
+              <div class="card-subtitle">5 transparent scoring components</div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="component-item">
+              <div class="component-header">
+                <span>Growth Score (30%)</span>
+                <span>{{ merchant.health_components.growth_score }} / 100</span>
+              </div>
+              <div class="progress-bar-container" style="width: 100%;">
+                <div class="progress-fill" style="background: var(--accent-green); width: {{ merchant.health_components.growth_score }}%;"></div>
+              </div>
+            </div>
+
+            <div class="component-item">
+              <div class="component-header">
+                <span>Frequency Score (20%)</span>
+                <span>{{ merchant.health_components.frequency_score }} / 100</span>
+              </div>
+              <div class="progress-bar-container" style="width: 100%;">
+                <div class="progress-fill" style="background: var(--accent-blue); width: {{ merchant.health_components.frequency_score }}%;"></div>
+              </div>
+            </div>
+
+            <div class="component-item">
+              <div class="component-header">
+                <span>Recency Score (20%)</span>
+                <span>{{ merchant.health_components.recency_score }} / 100</span>
+              </div>
+              <div class="progress-bar-container" style="width: 100%;">
+                <div class="progress-fill" style="background: var(--accent-indigo); width: {{ merchant.health_components.recency_score }}%;"></div>
+              </div>
+            </div>
+
+            <div class="component-item">
+              <div class="component-header">
+                <span>Transaction Value Score (15%)</span>
+                <span>{{ merchant.health_components.value_score }} / 100</span>
+              </div>
+              <div class="progress-bar-container" style="width: 100%;">
+                <div class="progress-fill" style="background: var(--accent-purple); width: {{ merchant.health_components.value_score }}%;"></div>
+              </div>
+            </div>
+
+            <div class="component-item">
+              <div class="component-header">
+                <span>Success Rate Score (15%)</span>
+                <span>{{ merchant.health_components.success_rate_score }} / 100</span>
+              </div>
+              <div class="progress-bar-container" style="width: 100%;">
+                <div class="progress-fill" style="background: var(--accent-cyan); width: {{ merchant.health_components.success_rate_score }}%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>
