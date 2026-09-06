@@ -169,3 +169,9 @@ Open your browser at **http://127.0.0.1:5000** to view the live dashboard!
    - In commercial fintech merchant retention, business relationship managers need transparent metrics they can explain to merchants (e.g., "Your volume dropped 40% and failure rate rose to 18%"). Explainability builds trust.
 3. **How are recommendations constructed?**
    - The recommendation engine dynamically interpolates metric values into natural language narratives, creating customized executive briefings per merchant.
+  
+   - ### ✉️ Get in Touch
+If you have questions, feedback, or collaboration opportunities:
+- **Developer**: Adarsh Kumar
+- **Email**: [adarsh.kumar919976@gmail.com](mailto:adarsh.kumar919976@gmail.com)
+
